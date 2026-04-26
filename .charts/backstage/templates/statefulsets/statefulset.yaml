@@ -9,14 +9,6 @@ spec:
   selector:
     matchLabels:
       {{- include "app.selectorLabels" . | nindent 6 }}
-  volumeClaimTemplates:
-    - metadata:
-        name: backstage-generated-techdocs
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 1Gi
   template:
     metadata:
       {{- with .Values.podAnnotations }}
