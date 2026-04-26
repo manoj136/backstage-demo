@@ -31,68 +31,6 @@ import {
   createOAuthProviderFactory,
 } from '@backstage/plugin-auth-node';
 
-const customAuth = createBackendModule({
-  // This ID must be exactly "auth" because that's the plugin it targets
-  pluginId: 'auth',
-  // This ID must be unique, but can be anything
-  moduleId: 'microsoft',
-  register(reg) {
-    reg.registerInit({
-      deps: { providers: authProvidersExtensionPoint },
-      async init({ providers }) {
-        providers.registerProvider({
-          // This ID must match the actual provider config, e.g. addressing
-          // auth.providers.github means that this must be "github".
-          providerId: 'microsoft',
-          // Use createProxyAuthProviderFactory instead if it's one of the proxy
-          // based providers rather than an OAuth based one
-          factory: createOAuthProviderFactory({
-            authenticator: microsoftAuthenticator,
-            async signInResolver({ profile }, ctx) {
-              /*********************************************************************
-               * Custom resolver code goes here, see farther down in this article! *
-               * "info" is the sign in result from the upstream (github here), and *
-               * "ctx" contains useful utilities for token issuance etc.           *
-               *********************************************************************/
-              if (!profile.email) {
-                throw new Error(
-                  'Login failed, user profile does not contain an email',
-                );
-              }
-              // Split the email into the local part and the domain.
-              const [localPart, domain] = profile.email.split('@');
-            
-              // Next we verify the email domain. It is recommended to include this
-              // kind of check if you don't look up the user in an external service.
-              if (domain !== 'admgroup.com') {
-                // throw new Error(
-                //   `Login failed, '${profile.email}' does not belong to the expected domain`,
-                //);
-              }
-            
-              // By using `stringifyEntityRef` we ensure that the reference is formatted correctly
-              const userEntity = stringifyEntityRef({
-                kind: 'User',
-                name: localPart,
-                namespace: DEFAULT_NAMESPACE,
-              });
-              return ctx.issueToken({
-                claims: {
-                  sub: userEntity,
-                  ent: [userEntity],
-                },
-              });
-            },
-          }),
-        });
-      },
-    });
-  },
-});
-
-backend.add(import('@backstage/plugin-auth-backend'));
-backend.add(customAuth);
-
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(
