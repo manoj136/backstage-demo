@@ -46,21 +46,21 @@ jobs:
           cp app-config.production.yaml packages/backend
           yarn build:backend --config app-config.production.yaml
 
-      - name: Copy base files
+      - name: Copy built dependencies
         run: |
           mkdir -p artifacts
           cp yarn.lock artifacts/
           cp package.json artifacts/
           cp -rf catalog-model artifacts/
 
-      - name: Extract skeleton
+      - name: Extract required compressed build dependencies
         run: |
           tar -xzf packages/backend/dist/skeleton.tar.gz -C artifacts
 
-      - name: Install prod dependencies
+      - name: Install production Yarn dependencies
         run: |
           cd artifacts
-          yarn install --immutable
+          yarn install
           yarn workspaces focus --all --production
 
       - name: Extract bundle
