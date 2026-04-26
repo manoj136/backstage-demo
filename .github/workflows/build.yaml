@@ -29,6 +29,9 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Force Yarn version
+        run: corepack prepare yarn@4.4.1 --activate
+
       - name: Install dependencies
         run: |
           yarn add simple-git
