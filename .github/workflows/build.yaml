@@ -43,6 +43,7 @@ jobs:
 
       - name: Build Backstage
         run: |
+          cp app-config.production.yaml packages/backend
           yarn build:backend --config app-config.production.yaml
 
       - name: Copy base files
