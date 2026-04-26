@@ -1,0 +1,85 @@
+name: Build Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  BUILD_ID: ${{ github.run_number }}
+
+jobs:
+
+  build-react:
+    name: React Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.0.0'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: |
+          yarn add simple-git
+          yarn add xml2js
+          yarn install --frozen-lockfile
+
+      - name: Generate TS types
+        run: yarn tsc
+
+      - name: Build Backstage
+        run: |
+          yarn build:backend --config app-config.production.yaml
+
+      - name: Copy base files
+        run: |
+          mkdir -p artifacts
+          cp yarn.lock artifacts/
+          cp package.json artifacts/
+          cp -rf catalog-model artifacts/
+
+      - name: Extract skeleton
+        run: |
+          tar -xzf packages/backend/dist/skeleton.tar.gz -C artifacts
+
+      - name: Install prod dependencies
+        run: |
+          cd artifacts
+          yarn install --frozen-lockfile --production --network-timeout 300000
+
+      - name: Extract bundle
+        run: |
+          tar -xzf packages/backend/dist/bundle.tar.gz -C artifacts
+
+      - name: Copy final artifacts
+        run: |
+          cp app-config.production.yaml artifacts/app-config.yaml
+          cp -rf node_modules artifacts/
+          cp -rf catalog-model artifacts/
+
+      - name: Zip build
+        run: |
+          cd artifacts
+          zip -r ../${BUILD_ID}.zip .
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: AKIAQRG7IAZRPKNLLDEG
+          aws-secret-access-key: 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
+          aws-region: us-east-1
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp "${BUILD_ID}.zip" "s3://backstage-build-bucket/${BUILD_ID}.zip"
