@@ -71,82 +71,10 @@ import {
   SchedulerServiceTaskRunner,
   readSchedulerServiceTaskScheduleDefinitionFromConfig
 } from '@backstage/backend-plugin-api';
-import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
+//import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
 import { azureKeyVaultProvider } from './providers/azure-key-vault-provider';
 import { azureDevOpsBuildPipelineProvider } from './providers/azure-devops-build-pipeline-provider';
 
-export const catalogModuleAzureKeyVaultProvider = createBackendModule({
-  pluginId: 'catalog',
-  moduleId: 'azureKeyVaultProvider',
-  register(env) {
-    env.registerInit({
-      deps: {
-        catalog: catalogProcessingExtensionPoint,
-        reader: coreServices.urlReader,
-        scheduler: coreServices.scheduler,
-        rootConfig: coreServices.rootConfig,
-        database: coreServices.database,
-        httpAuth: coreServices.auth,
-        permissions: coreServices.permissions,
-      },
-      async init({ catalog, scheduler, rootConfig, httpAuth}) {
-        const config = rootConfig.getConfig('catalog.providers.azure-key-vault-provider'); 
-        
-        // Add a default schedule if you don't define one in config.
-        const schedule = config.has('schedule')
-          ? readSchedulerServiceTaskScheduleDefinitionFromConfig(
-              config.getConfig('schedule'),
-            )
-          : {
-              frequency: { minutes: 1 },
-              timeout: { minutes: 10 },
-            };
-        const taskRunner: SchedulerServiceTaskRunner = scheduler.createScheduledTaskRunner(schedule);
-
-        const myProvider = new azureKeyVaultProvider(taskRunner,rootConfig, httpAuth);
-        catalog.addEntityProvider(myProvider);
-      },
-    });
-  },
-});
-
-export const catalogModuleAzureDevOpsBuildPipelineProvider = createBackendModule({
-  pluginId: 'catalog',
-  moduleId: 'azureDevOpsBuildPipelineProvider',
-  register(env) {
-    env.registerInit({
-      deps: {
-        catalog: catalogProcessingExtensionPoint,
-        reader: coreServices.urlReader,
-        scheduler: coreServices.scheduler,
-        rootConfig: coreServices.rootConfig,
-        database: coreServices.database,
-        httpAuth: coreServices.auth,
-        permissions: coreServices.permissions,
-      },
-      async init({ catalog, scheduler, rootConfig, httpAuth}) {
-        const config = rootConfig.getConfig('catalog.providers.azure-devOps-build-pipeline-provider'); 
-        
-        // Add a default schedule if you don't define one in config.
-        const schedule = config.has('schedule')
-          ? readSchedulerServiceTaskScheduleDefinitionFromConfig(
-              config.getConfig('schedule'),
-            )
-          : {
-              frequency: { minutes: 1 },
-              timeout: { minutes: 10 },
-            };
-        const taskRunner: SchedulerServiceTaskRunner = scheduler.createScheduledTaskRunner(schedule);
-
-        const myProvider = new azureDevOpsBuildPipelineProvider(taskRunner,rootConfig, httpAuth);
-        catalog.addEntityProvider(myProvider);
-      },
-    });
-  },
-});
-
-backend.add(catalogModuleAzureKeyVaultProvider);
-backend.add(catalogModuleAzureDevOpsBuildPipelineProvider);
 
 backend.add(import('@backstage/plugin-catalog-backend-module-azure'));
 // Add the Argo CD backend plugin
