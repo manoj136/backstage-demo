@@ -81,10 +81,10 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: AKIAQRG7IAZRPKNLLDEG
-          aws-secret-access-key: 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
-          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to AWS S3
         run: |
-          aws s3 cp "${BUILD_ID}.zip" "s3://backstage-build-bucket/${BUILD_ID}.zip"
+          aws s3 cp "${BUILD_ID}.zip" "s3://${{ secrets.S3_BUCKET }}/${BUILD_ID}.zip"
