@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: nginx-conf
+data:
+    nginx.conf: |
+        user nginx;
+        worker_processes  3;
+        events {
+            worker_connections  2048;
+        }
+        http {
+            server {
+                listen       82;
+                server_name  _;
+                location / {
+                    root   /app/external/open-apispecs;
+                    index  index.html index.htm;
+                }
+            }
+        }
+    

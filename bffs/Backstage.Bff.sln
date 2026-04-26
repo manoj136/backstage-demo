@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34607.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backstage.Bff.AzureKeyVault", "Backstage.Bff.AzureKeyVault\Backstage.Bff.AzureKeyVault.csproj", "{97C2B0AC-0569-4329-8438-4A1E0E6C30FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backstage.Bff.AzureDevops", "Backstage.Bff.AzureDevops\Backstage.Bff.AzureDevops.csproj", "{2FB44E9A-5414-44DB-B25E-78A8513BCDAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backstage.Bff.Kubernetes", "Backstage.Bff.Kubernetes\Backstage.Bff.Kubernetes.csproj", "{53B98A52-C6ED-40AB-B433-01DD4FA4FBE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97C2B0AC-0569-4329-8438-4A1E0E6C30FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C2B0AC-0569-4329-8438-4A1E0E6C30FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C2B0AC-0569-4329-8438-4A1E0E6C30FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C2B0AC-0569-4329-8438-4A1E0E6C30FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB44E9A-5414-44DB-B25E-78A8513BCDAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB44E9A-5414-44DB-B25E-78A8513BCDAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB44E9A-5414-44DB-B25E-78A8513BCDAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB44E9A-5414-44DB-B25E-78A8513BCDAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B98A52-C6ED-40AB-B433-01DD4FA4FBE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B98A52-C6ED-40AB-B433-01DD4FA4FBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B98A52-C6ED-40AB-B433-01DD4FA4FBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B98A52-C6ED-40AB-B433-01DD4FA4FBE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {908F3577-AFFC-4982-8951-3A5059D849B7}
+	EndGlobalSection
+EndGlobal

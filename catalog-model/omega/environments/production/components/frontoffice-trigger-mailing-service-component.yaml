@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mailing-service
+  description: mailing-service trigger
+  annotations:
+    dev.azure.com/project: Client Frontend
+    dev.azure.com/build-definition: omega-frontoffice-trigger-mailing-service-build
+    backstage.io/source-location: url:https://dev.azure.com/adm-group/Client%20Frontend/_git/omega-services?path=/frontoffice/mailing-service&version=GBenv/production&_a=contents
+    backstage.io/techdocs-ref: url:https://dev.azure.com/adm-group/Client%20Frontend/_git/omega-services?path=/frontoffice/mailing-service/.docs
+  tags:
+    - minimalapis
+    - dotnet
+    - data   
+spec:
+  type: service
+  lifecycle: production
+  owner: team-omega
+  system: omega
+  subcomponentOf: mailings
+  providesApis:
+    - mailing-service

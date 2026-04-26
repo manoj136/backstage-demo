@@ -1,0 +1,40 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-components
+  description: A collection of all Omega components
+spec:
+  targets:    
+    - ./components/frontoffice-articles-component.yaml
+    - ./components/frontoffice-auth-component.yaml
+    - ./components/frontoffice-bff-component.yaml
+    - ./components/frontoffice-catalogues-component.yaml
+    - ./components/frontoffice-contracts-component.yaml
+    - ./components/frontoffice-helpcenter-component.yaml
+    - ./components/frontoffice-logging-component.yaml
+    - ./components/frontoffice-mailings-component.yaml
+    - ./components/frontoffice-markets-component.yaml
+    - ./components/frontoffice-masterdata-component.yaml
+    - ./components/frontoffice-notifications-components.yaml
+    - ./components/frontoffice-orders-component.yaml
+    - ./components/frontoffice-permissions-component.yaml
+    - ./components/frontoffice-userprofiles-componnent.yaml
+    - ./components/frontoffice-usershopping-component.yaml
+    - ./components/frontoffice-trigger-article-images-component.yaml
+    - ./components/frontoffice-trigger-cart-component.yaml
+    - ./components/frontoffice-trigger-check-cart-email-component.yaml
+    - ./components/frontoffice-trigger-checkout-email-component.yaml
+    - ./components/frontoffice-trigger-delivery-address-component.yaml
+    - ./components/frontoffice-trigger-mailing-service-component.yaml
+    - ./components/frontoffice-trigger-mailing-template-component.yaml
+    - ./components/frontoffice-trigger-pdf-component.yaml
+    - ./components/frontoffice-trigger-qorders-checkout-component.yaml
+    - ./components/frontoffice-trigger-upload-bulk-users-component.yaml
+    - ./components/frontoffice-trigger-user-export-component.yaml
+    - ./components/frontoffice-trigger-user-logged-component.yaml
+    - ./components/infra-trigger-email-service-component.yaml
+    - ./components/infra-trigger-zip-service-component.yaml
+    - ./components/infra-uniqueidentification-component.yaml
+    - ./components/frontoffice-api-component.yaml
+    - ./components/backoffice-component.yaml
+    - ./components/infrastructure-api-component.yaml

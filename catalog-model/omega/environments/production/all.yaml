@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-all
+  description: A collection of all Omega entities, except users, groups, and templates
+spec:
+  targets:
+    - ./all-apis.yaml
+    - ./all-components.yaml
+    - ./all-systems.yaml
+    - ./all-groups.yaml
+
+

@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-groups
+  description: A collection of all Omega groups
+spec:
+  targets:
+    - ./groups/team-omega-group.yaml

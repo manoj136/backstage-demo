@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega
+  description: A collection of all Omega systems
+spec:
+  targets: 
+    - ./systems/omega-system.yaml

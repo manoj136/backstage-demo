@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: omega
+  description: omega
+spec:
+  owner: team-omega
+  domain: helpcentre

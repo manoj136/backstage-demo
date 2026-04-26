@@ -1,0 +1,1 @@
+export { CertificateInfoCard } from './CertificateInfoCard';

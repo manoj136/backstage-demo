@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backoffice
+  description: backoffice apis
+  tags:
+    - minimalapis
+    - dotnet
+    - data   
+spec:
+  type: service
+  lifecycle: development
+  owner: team-omega
+  system: omega
+  providesApis: 
+    - helpcentre

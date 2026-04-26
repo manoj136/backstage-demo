@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: frontoffice
+  description: frontoffice component
+  annotations:
+    dev.azure.com/project: Client Frontend  
+    dev.azure.com/build-definition: omega-frontoffice-api-catalogues-build,omega-frontoffice-api-articles-build,omega-frontoffice-api-auth-build,omega-frontoffice-api-bff-build,omega-frontoffice-api-contracts-build,omega-frontoffice-api-helpcenter-build,omega-frontoffice-api-logging-build,omega-frontoffice-api-mailings-build,omega-frontoffice-api-markets-build,omega-frontoffice-api-masterdata-build,omega-frontoffice-api-notifications-build,omega-frontoffice-api-orders-build,omega-frontoffice-api-permissions-build,omega-frontoffice-api-userprofiles-build,omega-frontoffice-api-usershopping-build
+  tags:
+    - minimalapis
+    - dotnet
+    - data   
+spec:
+  type: service
+  lifecycle: development
+  owner: team-omega
+  system: omega

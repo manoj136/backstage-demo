@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: notifications
+  description: notifications component
+  annotations:
+    dev.azure.com/project: Client Frontend
+    dev.azure.com/build-definition: omega-frontoffice-api-notifications-build
+    backstage.io/source-location: url:https://dev.azure.com/adm-group/Client%20Frontend/_git/omega-apis?path=/frontoffice/notifications&version=GBenv/production&_a=contents
+    backstage.io/techdocs-ref: url:https://dev.azure.com/adm-group/Client%20Frontend/_git/omega-apis?version=GBmain&path=/frontoffice/notifications/.docs
+  tags:
+    - minimalapis
+    - dotnet
+    - data   
+spec:
+  type: service
+  lifecycle: production
+  owner: team-omega
+  system: omega
+  subcomponentOf: frontoffice
+  providesApis:
+    - notifications

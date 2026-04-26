@@ -1,0 +1,43 @@
+name: $(BuildDefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+pool: Default
+
+trigger: none
+
+resources:
+  repositories:
+    - repository: omega-dotnet-solution
+      name: omega-dotnet-solution
+      type: git
+      ref: main # env/production
+      trigger:
+        branches:
+          include:
+            - main # env/production
+        paths:
+          include:
+            - docs
+  
+variables:
+  - group: admgroup-secrets
+  - group: omega-azure
+
+steps:
+  - checkout: omega-dotnet-solution
+    path: s/omega-dotnet-solution
+
+  - task: AzureCLI@2
+    displayName: '🔼 Publish binaries'
+    inputs:
+      azureSubscription: "Client Frontend"
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: >-
+        az
+        storage
+        file
+        upload-batch
+        --destination backstage
+        --source $(Pipeline.Workspace)\s\omega-dotnet-solution\.docs
+        --destination-path techdocs/omega-dotnet-solution
+        --connection-string '$(azure-devops-build-azure-storage-connectionstring)'
+      

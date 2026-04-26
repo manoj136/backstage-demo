@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-apis
+  description: A collection of all Omega APIs
+spec:
+  targets:   
+    - ./apis/frontoffice-catalogues-api.yaml
+    - ./apis/frontoffice-contracts-api.yaml
+    - ./apis/frontoffice-helpcentre-api.yaml
+    - ./apis/infra-uniqueidentification-api.yaml

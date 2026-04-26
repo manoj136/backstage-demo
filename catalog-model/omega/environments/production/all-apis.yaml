@@ -1,0 +1,38 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-apis
+  description: A collection of all Omega APIs
+spec:
+  targets:   
+    - ./apis/frontoffice-catalogues-api.yaml
+    - ./apis/frontoffice-contracts-api.yaml
+    - ./apis/frontoffice-helpcentre-api.yaml 
+    - ./apis/frontoffice-articles-api.yaml
+    - ./apis/frontoffice-auth-api.yaml
+    - ./apis/frontoffice-bff-api.yaml
+    - ./apis/frontoffice-logging-api.yaml
+    - ./apis/frontoffice-mailings-api.yaml
+    - ./apis/frontoffice-markets-api.yaml
+    - ./apis/frontoffice-masterdata-api.yaml
+    - ./apis/frontoffice-notifications-api.yaml
+    - ./apis/frontoffice-orders-api.yaml
+    - ./apis/frontoffice-permissions-api.yaml
+    - ./apis/frontoffice-userprofiles-api.yaml
+    - ./apis/frontoffice-usershopping-api.yaml
+    - ./apis/infra-uniqueidentification-api.yaml
+    - ./apis/frontoffice-article-images-trigger.yaml
+    - ./apis/frontoffice-cart-trigger.yaml
+    - ./apis/frontoffice-check-cart-email-trigger.yaml
+    - ./apis/frontoffice-checkout-email-trigger.yaml
+    - ./apis/frontoffice-delivery-address-trigger.yaml
+    - ./apis/frontoffice-mailing-service-trigger.yaml
+    - ./apis/frontoffice-mailing-template-trigger.yaml
+    - ./apis/frontoffice-pdf-trigger.yaml
+    - ./apis/frontoffice-qorders-checkout-trigger.yaml
+    - ./apis/frontoffice-upload-bulk-users-trigger.yaml
+    - ./apis/frontoffice-user-export-trigger.yaml
+    - ./apis/frontoffice-user-logged-trigger.yaml
+    - ./apis/infra-email-service-trigger.yaml
+    - ./apis/infra-zip-service-trigger.yaml
+

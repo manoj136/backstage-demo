@@ -1,0 +1,194 @@
+# Backstage override configuration for your local development environment
+app:
+  title: ADM Group Developer Portal
+  baseUrl: https://backstage.admsolutions.com
+
+organization:
+  name: ADM Group
+
+backend: 
+  #enable service to service auth
+  auth:    
+    keys:
+      - secret: 243267754710d109c1b2f8b6779fa249c22bf3a5f3a50732 # use link this to generate base64 https://www.tutorialspoint.com/execute_nodejs_online.php
+  reading:
+    allow:
+      - host: '*.swagger.io'
+      - host: 'localhost:82'
+      - host: '127.0.0.1:82'
+      - host: 'https://backstage.admsolutions.com' # backstage base url host
+      - host: 'localhost:5155' # azure key vault bff host
+        name: bff-azure-keyVault
+
+      - host: 'localhost:5187' # azure devops pipeline bff host
+        name: bff-azure-devops
+
+      - host: 'localhost:5179' # k8s bff host
+        name: bff-kubernetes
+  # Used for enabling authentication, secret is shared by all backend plugins
+  # See https://backstage.io/docs/auth/service-to-service-auth for
+  # information on the format
+  # auth:
+  #   keys:
+  #     - secret: ${BACKEND_SECRET}
+  baseUrl: https://backstage.admsolutions.com
+  listen:
+    port: 7007
+    # Uncomment the following host directive to bind to specific interfaces
+    # host: 127.0.0.1
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+  cors:
+    origin: https://backstage.admsolutions.com
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # This is for local development only, it is not recommended to use this in production
+  # The production database configuration is stored in app-config.production.yaml
+  database:
+    client: pg
+    connection:
+      database: backstage_plugin_catalog
+      host: omega-backstage-production.postgres.database.azure.com
+      port: 5432
+      user: sa@omega-backstage-production
+      password: gbDLKC*69;%YEQ3.8G#2nuRjq4af~^xSByNrm"$W-P_pd+z?k/    
+      ssl: true
+      sslmode: require 
+  # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+integrations:
+  azure:
+    - host: dev.azure.com
+      credentials:
+        - personalAccessToken: chutmicb7acp5awxdfvafrlic2rklg3qluqzch5t3fyakavrmk3a
+      #token: chutmicb7acp5awxdfvafrlic2rklg3qluqzch5t3fyakavrmk3a 
+    
+  # github:
+  #   - host: github.com
+  #     # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+  #     # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
+  #     token: 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
+  #   ### Example for how to add your GitHub Enterprise instance using the API:
+  #   # - host: ghe.example.net
+  #   #   apiBaseUrl: https://ghe.example.net/api/v3
+  #   #   token: ${GHE_TOKEN}
+
+
+# proxy:
+#   ### Example for how to add a proxy endpoint for the frontend.
+#   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
+#   # '/test':
+#   #   target: 'https://example.com'
+#   #   changeOrigin: true
+
+# Reference documentation http://backstage.io/docs/features/techdocs/configuration
+# Note: After experimenting with basic setup, use CI/CD to generate docs
+# and an external cloud storage when deploying TechDocs for production use-case.
+# https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'local' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+    local:      
+      publishDirectory: '/app/external/generated-techdocs'
+ 
+auth:
+  # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: production
+  providers:
+    microsoft:
+      production:
+        clientId: 887e377e-f423-4bb9-a133-dfa44a1e3fa9
+        clientSecret: g_68Q~W9GAqD1UL4A~Qs5wy1hwycd55ra2afacvx
+        tenantId: 9eae7854-a178-447e-921a-33a0f1179c9f
+
+qeta:
+  allowAnonymous: false
+  allowMetadataInput: false
+  allowGlobalEdits: false
+  entities:
+    kinds: ['Component']
+    max: 3
+  tags:
+    allowCreation: true
+    allowedTags:
+      - test
+      - tag2
+    max: 5
+  moderators:   
+    # - user:default/manoj.kumar
+  storage:
+    disabled: false
+    type: database
+    folder: /app/external
+
+azureDevOps:
+  host: dev.azure.com
+  #token: chutmicb7acp5awxdfvafrlic2rklg3qluqzch5t3fyakavrmk3a  
+  organization: adm-group
+
+permission:
+  enabled: true
+  rbac:   
+    admin:
+      users:
+        - name: user:default/manoj.kumar
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://kubernetes.default.svc
+          name: AKS_OMEGA
+          authProvider: 'serviceAccount'
+          serviceAccountToken: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkluVTJOV1ZJZURWWE9VdEhWVmh5UjJjdFFUVjRaRkJ4VG1wVk4ySk5jbFpOWkhVMGVFVk1SMFZPUmpBaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUppWVdOcmMzUmhaMlV0Y0hKdlpIVmpkR2x2YmlJc0ltdDFZbVZ5Ym1WMFpYTXVhVzh2YzJWeWRtbGpaV0ZqWTI5MWJuUXZjMlZqY21WMExtNWhiV1VpT2lKaVlXTnJjM1JoWjJVdGF6aHpJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpYSjJhV05sTFdGalkyOTFiblF1Ym1GdFpTSTZJbUpoWTJ0emRHRm5aUzFyT0hNaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNTFhV1FpT2lJeE5UbGhPV0pqTnkwM1lqRTRMVFF5WW1NdFlXRm1ZeTAyWkdJNVpqWTFNVFEyWkdZaUxDSnpkV0lpT2lKemVYTjBaVzA2YzJWeWRtbGpaV0ZqWTI5MWJuUTZZbUZqYTNOMFlXZGxMWEJ5YjJSMVkzUnBiMjQ2WW1GamEzTjBZV2RsTFdzNGN5SjkucUVOZXhnQkhlbC1mRFl3d0tNWDFjdWZ2eEtteEphY0tEa0YtVjlwbGNrZ0p0YS00YjZVNVhhTlRUekRsUU9HLVZFdWUzTlhCdDhvcTN0M0M0QmhZdDZaX1dCSy1EaFBvYU9mZUI3bDdiVjlnaUM4SEhKNnZZNW5xbnpSOHpfOG9fdmhyUDhyMldQaEVJdDdOd1pkYjRPVlp6T2Y0Y0d6eWVaWmh5elVMdmJTOEFWcUNaeWJWQUVBV1pGVU81TXhYUUNjY1g5d2w0Y2YwYkdhWHNreGJ4OTVpM3dBSDlhX3p2RWotNGpxS0lxMks4T19UNW1uUldiQkdCNW1UcDVOX190YnI1eXpZUXFtYzVnNVRyUWZKamlBZjBPc3JURURLcHVLc2J6QW5ZRGVBamFxdE1NMjNHMVowVEwwY19qRUNIS3BKNjBQb2FqNW04bzB3OUVPcldaeXBKNm0xWUhzRG1FRlowNVU5UUh1V0VOVGhpWDg4dW1xSnllMDZDemR1NjFJOGJnSWtCd1ROZ3JBTGZnS3YxVVJVN2JFY0dHRW83VTZaOEtRSzR4RUxZS0twN2xVTmVNaVRpR2E4NWFsVzhWT3haUV9YdDdNYWI5QTBNUi15cUVyaElueEdFTkRYTlRmOE81RWwwZ0M2azdtd0xSTnE2RjhHNUo2RTFzZzlpRk1ZdVRRa3l3RTUwMzdWOXBQMkJ0ZE1fSWpsSWI0Ny10bkdfZkFsenJHc1drcFFBQnYwR2tJRkpvMU1DTUtLaWJXY2ZVTnh3WFNPa0xqbHJzVG5kMEVCUDZ6Xy1aVVRWXzRmTUh0dTA3TWFjN0tobXhrMS0xSk15ZXhHRFRfOEU5Nk5yTEFzS1pIdk1VMC02TDVwdjZBWlRBMGZhR2ZGYUluUkdoc0VOUlE=
+          skipTLSVerify: true
+
+custom-providers:
+  integrations:
+    azure-key-vault:
+      remote: https://5fTuiXnCtCmwN1pCJgOogGJnPn05G5y7bp4S29nuoNzlSiaflQ7nJQQJ99ALACAAAAASHdlEAAASAZDObY1S@dev.azure.com/adm-group/IT%20Architecture/_git/backstage-component-resource-manifests
+      target: local-workspace-azurekeyvault
+      aure-key-vault-bff: http://localhost:5155/api/v1/azure-keyvault/secrets/{secret-name}
+    azure-devops-pipeline:
+      remote: https://5fTuiXnCtCmwN1pCJgOogGJnPn05G5y7bp4S29nuoNzlSiaflQ7nJQQJ99ALACAAAAASHdlEAAASAZDObY1S@dev.azure.com/adm-group/IT%20Architecture/_git/backstage-component-resource-manifests
+      target: local-workspace-azuredevops
+      aure-devops-pipeline-bff: http://localhost:5187/api/v1/azure-devops/pipelines/{pipeline-id}/branch/{branch-name}/builds/latest #http://localhost:5187/api/v1/azure-devops/pipelines/{pipeline-id}/builds/latest
+      aure-k8s-bff: http://localhost:5179/api/v1/k8s/namespace/{k8s-namespace}/deployments/{deployment-name}
+
+catalog:
+  providers:
+    azure-key-vault-provider:
+      schedule: 
+        frequency: { seconds: 60}
+        timeout: { seconds: 3 }
+    azure-devOps-build-pipeline-provider:
+      schedule: 
+        frequency: { seconds: 60}
+        timeout: { seconds: 3 }
+    azureDevOps:
+      admgroup-az-devops-provider:
+        organization: adm-group
+        project: '*'
+        repository: '*' # this will match all repos starting with service-*
+        path: '*catalog-info.yaml'
+        schedule: # optional; same options as in TaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 1 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 3 }
+  locations:
+    - type: file
+      target: ../../examples/org.yaml
+      rules:
+        - allow:
+            - User
+            - Group
+  rules:
+    - allow: [Component, System, API, Resource, Location, Domain]

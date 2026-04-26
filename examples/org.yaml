@@ -1,0 +1,38 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: manoj.kumar
+spec:
+  memberOf: [adm-group]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: matias.fidemraizer
+spec:
+  memberOf: [adm-group]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: iker.ulloa
+spec:
+  memberOf: [adm-group]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: mircea.pincovai
+spec:
+  memberOf: [adm-group]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: adm-group
+spec:
+  type: team
+  children: []

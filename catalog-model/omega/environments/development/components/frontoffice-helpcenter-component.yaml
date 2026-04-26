@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: helpcenter
+  description: helpcenter component
+  annotations:
+    dev.azure.com/project: Client Frontend
+    dev.azure.com/build-definition: omega-frontoffice-api-helpcenter-build
+  tags:
+    - minimalapis
+    - dotnet
+    - data   
+spec:
+  type: service
+  lifecycle: development
+  owner: team-omega
+  system: omega
+  subcomponentOf: frontoffice
+  providesApis:
+    - helpcenter

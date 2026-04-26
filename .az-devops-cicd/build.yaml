@@ -1,0 +1,193 @@
+name: $(BuildDefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+
+trigger: 
+  branches:
+    include:
+      - env/production
+
+variables:
+  - group: admgroup-secrets
+
+jobs:
+  - job: BuildDotNet
+    displayName: .NET
+    pool: Default
+
+    steps:    
+      - task: UseDotNet@2
+        displayName: 🆚 Select .NET version
+        inputs:
+          version: 8.x
+
+      - task: DotNetCoreCLI@2
+        displayName: "Build BFF: Kubernetes"
+        inputs:
+          projects: $(Build.SourcesDirectory)/bffs/Backstage.Bff.Kubernetes
+          command: 'publish'
+          arguments: >- 
+            -o $(Build.ArtifactStagingDirectory)/bff/kubernetes
+            --configuration release
+            --self-contained=false
+            -r linux-x64
+          publishWebProjects: false
+          zipAfterPublish: false
+          modifyOutputPath: true
+
+      - task: DotNetCoreCLI@2
+        displayName: "Build BFF: Azure Key Vault"
+        inputs:
+          projects: $(Build.SourcesDirectory)/bffs/Backstage.Bff.AzureKeyVault
+          command: 'publish'
+          arguments: >- 
+            -o $(Build.ArtifactStagingDirectory)/bff/azure-keyvault
+            --configuration release
+            --self-contained=false
+            -r linux-x64
+          publishWebProjects: false
+          zipAfterPublish: false
+          modifyOutputPath: true
+
+      - task: DotNetCoreCLI@2
+        displayName: "Build BFF: Azure DevOps"
+        inputs:
+          projects: $(Build.SourcesDirectory)/bffs/Backstage.Bff.AzureDevops
+          command: 'publish'
+          arguments: >- 
+            -o $(Build.ArtifactStagingDirectory)/bff/azure-devops
+            --configuration release
+            --self-contained=false
+            -r linux-x64
+          publishWebProjects: false
+          zipAfterPublish: false
+          modifyOutputPath: true
+
+      - powershell: |
+            Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/bff/azure-devops/bffs/ -Recurse -File | Move-Item -Destination $(Build.ArtifactStagingDirectory)/bff/azure-devops
+            Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/bff/azure-keyvault/bffs/ -Recurse -File | Move-Item -Destination $(Build.ArtifactStagingDirectory)/bff/azure-keyvault
+            Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/bff/kubernetes/bffs/ -Recurse -File | Move-Item -Destination $(Build.ArtifactStagingDirectory)/bff/kubernetes
+        displayName: Normalize binary file directory structure before compression
+        
+      - task: ArchiveFiles@2
+        displayName: Create BFFs binaries compressed file
+        inputs:
+          rootFolderOrFile: $(Build.ArtifactStagingDirectory)/bff
+          includeRootFolder: false
+
+      - task: PowerShell@2
+        displayName: '🔼 Publish binaries'
+        inputs:
+          targetType: inline
+          script: |
+            $output = (azcopy copy "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$($env:BUILD_BUILDID).zip" """https://aksadmsa.file.core.windows.net/build/infra/app/backstage/bff/$($env:BUILD_BUILDID).zip?$(az-devops-build-upload-fileshare-sas-token)""")
+            write-host $output
+
+            if($output -notcontains "Final Job Status: Completed") {
+              write-host "##vso[task.logissue type=error]Could not copy the binaries to target file share."
+              exit 1
+            }   
+        
+  - job: BuildReact
+    displayName: React
+    pool: 
+      name: Azure Pipelines
+      vmImage: 'ubuntu-latest'
+
+    steps:
+      - task: UsePythonVersion@0
+        displayName: Install Python
+      
+      - bash: |
+          export PYTHON=/usr/bin/python3
+        displayName: Set yarn Python path
+
+      - task: NodeTool@0
+        displayName: Install NodeJS
+        inputs:
+          versionSpec: '18.17.1'
+      
+      - bash: |
+          corepack enable
+        displayName: Enable NodeJS core pack
+        workingDirectory: $(Build.SourcesDirectory)
+      
+      - bash: |
+          yarn add simple-git
+          yarn add xml2js
+          yarn install --frozen-lockfile
+        displayName: Install Yarn dependencies
+        workingDirectory: $(Build.SourcesDirectory)
+      
+      - bash: |
+          yarn tsc
+        displayName: Generate TypeScript type definitions
+        workingDirectory: $(Build.SourcesDirectory)
+      
+      - bash: |
+          yarn build:backend --config $(Build.SourcesDirectory)/app-config.production.yaml
+        displayName: Build Backstage
+        workingDirectory: $(Build.SourcesDirectory)
+
+      - bash: |
+          cp ./yarn.lock $(Build.ArtifactStagingDirectory)/yarn.lock
+          cp ./package.json $(Build.ArtifactStagingDirectory)/package.json
+          cp  -rf ./catalog-model $(Build.ArtifactStagingDirectory)/catalog-model
+        displayName: Copy built dependencies
+        workingDirectory: $(Build.SourcesDirectory)
+
+      - task: ExtractFiles@1
+        displayName: Extract required compressed build dependencies
+        inputs:
+          archiveFilePatterns: $(Build.SourcesDirectory)/packages/backend/dist/skeleton.tar.gz
+          destinationFolder: $(Build.ArtifactStagingDirectory)
+      
+      - bash: |
+          yarn install --frozen-lockfile --production --network-timeout 300000
+        displayName: Install production Yarn dependencies
+        workingDirectory: $(Build.ArtifactStagingDirectory)
+
+      - task: ExtractFiles@1
+        displayName: Extract built Backstage
+        inputs:
+          archiveFilePatterns: $(Build.SourcesDirectory)/packages/backend/dist/bundle.tar.gz
+          destinationFolder: $(Build.ArtifactStagingDirectory)
+        
+      - bash: |
+          cp ./app-config.production.yaml $(Build.ArtifactStagingDirectory)/app-config.yaml
+          cp -rf ./node_modules $(Build.ArtifactStagingDirectory)
+          cp  -rf ./catalog-model $(Build.ArtifactStagingDirectory)
+        displayName: Copy build artifacts
+        workingDirectory: $(Build.SourcesDirectory)
+      
+      - bash: |
+            zip -r -q -y $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip .
+        displayName: Compress build
+        workingDirectory: $(Build.ArtifactStagingDirectory)
+
+      - bash: |
+          # Download and extract
+          wget https://aka.ms/downloadazcopy-v10-linux
+          tar -xvf downloadazcopy-v10-linux
+
+          # Move AzCopy
+          sudo rm -f /usr/bin/azcopy
+          sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
+          sudo chmod 755 /usr/bin/azcopy
+
+          # Clean the kitchen
+          rm -f downloadazcopy-v10-linux
+          rm -rf ./azcopy_linux_amd64_*/
+        displayName: Install 'azcopy'
+
+      - task: Bash@3
+        displayName: Publish binaries
+        inputs:
+          targetType: inline
+          script: |
+            output=$(azcopy copy "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip" 'https://aksadmsa.file.core.windows.net/build/infra/app/backstage/core/$(Build.BuildId).zip?$(az-devops-build-upload-fileshare-sas-token)')
+
+            jobStatus=$(echo $output | grep "Final Job Status: Completed")
+
+            if [ -z "$jobStatus" ]
+            then
+              echo "##vso[task.logissue type=error]$output"
+            fi

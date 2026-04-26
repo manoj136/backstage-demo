@@ -1,0 +1,1 @@
+export { LicenseInfoCard } from './LicenseInfoCard';

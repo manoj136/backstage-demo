@@ -1,0 +1,41 @@
+name: $(BuildDefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+pool: Default
+
+trigger: none
+
+variables:
+    - group: omega-k8s
+
+resources:
+  pipelines:
+    - pipeline: build
+      source: backstage-build
+      branch: main
+      trigger:
+        branches:
+          include:
+            - main
+  
+steps:
+  - task: HelmInstaller@1
+    displayName: 🧑‍🔧 Install Helm
+
+  - task: HelmDeploy@0
+    displayName: "🧑‍🔧 Helm: Chart install or upgrade"
+    inputs:
+      command: upgrade
+      install: true
+      connectionType: Kubernetes Service Connection
+      kubernetesServiceConnection: $(K8s.ServiceConnection)
+      azureContainerRegistry: admomega.azurecr.io
+      waitForExecution: false
+      chartType: FilePath
+      chartPath: $(Build.SourcesDirectory)/.charts/backstage
+      releaseName: backstage
+      chartVersion: 1.0.0
+      namespace: backstage-development
+      arguments: >-
+        --debug
+        --reset-values
+        --set tags.app=$(resources.pipeline.build.runID)
+        --set environment=development

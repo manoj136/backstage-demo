@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: backstage
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ include "app.host" . }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: backstage
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+
+  - host: backstage.northeurope.cloudapp.azure.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: backstage
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+
+  tls:
+  - hosts:
+    - {{ include "app.host" . }}
+    secretName: admsolutions-tls

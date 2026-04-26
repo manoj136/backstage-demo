@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: omega-components
+  description: A collection of all Omega components
+spec:
+  targets:
+    - ./components/frontoffice-catalogues-component.yaml
+    - ./components/frontoffice-contracts-component.yaml
+    - ./components/frontoffice-helpcenter-component.yaml
+    - ./components/frontoffice-component.yaml
+    - ./components/backoffice-component.yaml
+    - ./components/infrastructure-component.yaml
+
