@@ -24,7 +24,7 @@ backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 //backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 
 import { createBackendModule } from '@backstage/backend-plugin-api';
-import { microsoftAuthenticator } from '@backstage/plugin-auth-backend-module-microsoft-provider';
+//import { microsoftAuthenticator } from '@backstage/plugin-auth-backend-module-microsoft-provider';
 import { stringifyEntityRef, DEFAULT_NAMESPACE } from '@backstage/catalog-model';
 import {
   authProvidersExtensionPoint,
