@@ -16,7 +16,7 @@ initCommand:
     - |
         /bin/sh <<'EOF'
 
-        unzip -o s3://${{ secrets.S3_BUCKET }}/${BUILD_ID}.zip -d ./react
+        unzip -o s3://{{ .Values.s3.bucket }}/{{ .Values.build.id }}.zip -d ./react
 
         EOF
 
