@@ -1,7 +1,7 @@
 # Backstage override configuration for your local development environment
 app:
   title: ADM Group Developer Portal
-  baseUrl: https://backstage.admsolutions.com
+  baseUrl: https://backstage1.admsolutions.com
 
 organization:
   name: ADM Group
@@ -16,7 +16,7 @@ backend:
       - host: '*.swagger.io'
       - host: 'localhost:82'
       - host: '127.0.0.1:82'
-      - host: 'https://backstage.admsolutions.com' # backstage base url host
+      - host: 'https://backstage1.admsolutions.com' # backstage base url host
       - host: 'localhost:5155' # azure key vault bff host
         name: bff-azure-keyVault
 
@@ -31,7 +31,7 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  baseUrl: https://backstage.admsolutions.com
+  baseUrl: https://backstage1.admsolutions.com
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
@@ -41,7 +41,7 @@ backend:
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
-    origin: https://backstage.admsolutions.com
+    origin: https://backstage1.admsolutions.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   # This is for local development only, it is not recommended to use this in production

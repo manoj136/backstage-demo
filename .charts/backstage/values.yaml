@@ -16,8 +16,7 @@ initCommand:
     - |
         /bin/sh <<'EOF'
 
-        unzip -o /build/infra/app/backstage/core/{{ .Values.tags.app }}.zip -d ./react
-        unzip -o /build/infra/app/backstage/bff/{{ .Values.tags.app }}.zip -d ./bff
+        unzip -o s3://${{ secrets.S3_BUCKET }}/${BUILD_ID}.zip -d ./react
 
         EOF
 
@@ -55,9 +54,6 @@ appEnv:
   
   - name: DISPLAY
     value: :42
-
-bffCommand: |
-  dotnet ./bff/{{ .bff.name | trimPrefix "bff-" | lower }}/Backstage.Bff.{{ .bff.name | trimPrefix "bff-" | camelcase | title }}.dll
 
 appCommand:
   - sh

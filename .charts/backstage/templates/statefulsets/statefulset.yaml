@@ -35,18 +35,12 @@ spec:
           command: 
             {{- tpl (toYaml .Values.initCommand.unzipbuild) . | nindent 12 }}
 
-          volumeMounts: 
-            - name: build
-              mountPath: /build
-
-            - name: secrets
-              mountPath: /secrets
-            
+          volumeMounts:             
             - name: app
               mountPath: /app
 
         - name: buildapp
-          image: "node:18.17.1-bullseye"
+          image: "node:20-bullseye"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           workingDir: {{ .Values.workingDir }}
           command: 
@@ -89,133 +83,7 @@ spec:
             - name: app 
               mountPath: /app
 
-            - name: secrets
-              mountPath: /secrets
-            
-            - name: backstage
-              mountPath: /app/external
-            
-            - name: backstage-generated-techdocs
-              mountPath: /app/external/generated-techdocs
-        
-        - name: apispecs
-          image: nginx:stable-bullseye-perl
-          ports:
-            - name: http
-              containerPort: 82
-
-          volumeMounts:
-            - name: nginx-conf
-              mountPath: /etc/nginx
-              readOnly: true
-
-            - name: backstage
-              mountPath: /app/external/open-apispecs
-
-        {{- range $bff := .Values.backend.reading.allow }}
-        {{- if $bff.name }}
-        - name: {{ $bff.name | lower }}
-          image: admomega.azurecr.io/dotnet/aspnet:8.0.3
-          workingDir: {{ $.Values.workingDir }}
-          ports:
-            - name: http
-              containerPort: {{ regexSplit ":" $bff.host -1 | last }}
-
-          env:
-            - name: ASPNETCORE_URLS
-              value: http://+:{{ regexSplit ":" $bff.host -1 | last }}
-            
-            {{- if eq $bff.name "bff-azure-keyVault" }}
-            
-            - name: AdmGroup__AzureKeyVault__VaultURI
-              value: https://admgroup-secrets.vault.azure.net
-
-            - name: AdmGroup__AzureKeyVault__ClientId
-              valueFrom:
-                secretKeyRef:
-                  name: keyvault-credentials
-                  key: backstage-bff-kv-clientId
-
-            - name: AdmGroup__AzureKeyVault__TenantId
-              valueFrom:
-                secretKeyRef:
-                  name: keyvault-credentials
-                  key: backstage-bff-kv-tenantId
-
-            - name: AdmGroup__AzureKeyVault__ClientSecret
-              valueFrom:
-                secretKeyRef:
-                  name: keyvault-credentials
-                  key: backstage-bff-kv-clientSecret
-            {{- end }}
-
-            {{- if eq $bff.name "bff-azure-devops" }}
-            
-            - name: AdmGroup__AzureDevOps__OrganizationUrl
-              value: https://dev.azure.com/adm-group/
-
-            - name: AdmGroup__AzureDevOps__PAT
-              value: DHf36S8vWb0yN5thFbVaBM1yYwcKd1wXNsWsdzkkcnUZ7j5Lws5yJQQJ99BBACAAAAASHdlEAAASAZDO3HvZ
-
-            - name: AdmGroup__AzureDevOps__ProjectName
-              value: Client Frontend
-            {{- end }}
-
-            {{- if eq $bff.name "bff-kubernetes" }}
-            
-            - name: AdmGroup__k8s__BaseAddress
-              value: http://127.0.0.1:8001/
-            {{- end }}
-
-          volumeMounts:
-            - name: app
-              mountPath: /app
-              readOnly: true
-          command:
-              - sh
-              - -c
-              - |
-                {{- tpl $.Values.bffCommand (dict "bff" $bff) | nindent 16 }}
-        {{- end }}
-        {{- end }}
-
       volumes:
         - name: app
           emptyDir:
-            sizeLimit: 3Gi        
-        
-        - name: secrets
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: admgroup-omega-secrets
-
-        - name: build
-          csi:
-            driver: file.csi.azure.com
-            readOnly: true
-            volumeAttributes:
-              mountOptions: dir_mode=0777,file_mode=0777,cache=strict,actimeo=30,nosharesock
-              secretName: backstage-aks-build-fileshare
-              shareName: build
-
-        - name: backstage
-          csi:
-            driver: file.csi.azure.com
-            readOnly: false
-            volumeAttributes:
-              mountOptions: dir_mode=0777,file_mode=0777,cache=strict,actimeo=30,nosharesock
-              secretName: backstage-aks-build-fileshare
-              shareName: backstage
-
-        - name: backstage-generated-techdocs
-          persistentVolumeClaim:
-            claimName: backstage-generated-techdocs
-
-        - name: nginx-conf
-          configMap:
-            name: nginx-conf
-            items:
-              - key: nginx.conf
-                path: nginx.conf
+            sizeLimit: 3Gi 

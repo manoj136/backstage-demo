@@ -27,7 +27,7 @@ userAssignedIdentityID: b30515c5-5622-420b-94fc-ae51efc21b4c
 
 {{- define "app.host" -}}
 {{- if eq .Values.environment "production" -}}
-{{- print "backstage.admsolutions.com" -}}
+{{- print "backstage1.admsolutions.com" -}}
 {{- else -}}
 {{- print "backstage-development.admsolutions.com" -}}
 {{- end }}
