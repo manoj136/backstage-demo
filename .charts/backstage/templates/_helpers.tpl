@@ -18,13 +18,6 @@ app.kubernetes.io/name: {{ include "app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "secretProviderClasses.omegaSecrets.customAuth" -}}
-usePodIdentity: "false"
-useVMManagedIdentity: "true"
-tenantId: 8201f92e-8641-4feb-9268-9de6950fdf1c
-userAssignedIdentityID: b30515c5-5622-420b-94fc-ae51efc21b4c
-{{- end -}}
-
 {{- define "app.host" -}}
 {{- if eq .Values.environment "production" -}}
 {{- print "backstage1.admsolutions.com" -}}
