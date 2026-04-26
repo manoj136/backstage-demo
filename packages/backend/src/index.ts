@@ -90,8 +90,8 @@ const customAuth = createBackendModule({
   },
 });
 
-// backend.add(import('@backstage/plugin-auth-backend'));
-// backend.add(customAuth);
+backend.add(import('@backstage/plugin-auth-backend'));
+backend.add(customAuth);
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
