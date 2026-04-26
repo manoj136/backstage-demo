@@ -60,20 +60,20 @@ jobs:
       - name: Install production Yarn dependencies
         run: |
           cd artifacts
-          yarn install
+          yarn install --no-immutable
           yarn workspaces focus --all --production
 
-      - name: Extract bundle
+      - name: Extract built Backstage
         run: |
           tar -xzf packages/backend/dist/bundle.tar.gz -C artifacts
 
-      - name: Copy final artifacts
+      - name: Copy build artifacts
         run: |
           cp app-config.production.yaml artifacts/app-config.yaml
           cp -rf node_modules artifacts/
           cp -rf catalog-model artifacts/
 
-      - name: Zip build
+      - name: Compress build
         run: |
           cd artifacts
           zip -r ../${BUILD_ID}.zip .
@@ -85,6 +85,6 @@ jobs:
           aws-secret-access-key: qiGVoatLjWyPcdBagp0HADhPq8/2c4vdHvCAAet0
           aws-region: us-east-1
 
-      - name: Upload to S3
+      - name: Upload to AWS S3
         run: |
           aws s3 cp "${BUILD_ID}.zip" "s3://backstage-build-bucket/${BUILD_ID}.zip"
