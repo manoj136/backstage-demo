@@ -23,7 +23,7 @@ backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 
 //backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 
-import { createBackendModule } from '@backstage/backend-plugin-api';
+//import { createBackendModule } from '@backstage/backend-plugin-api';
 //import { microsoftAuthenticator } from '@backstage/plugin-auth-backend-module-microsoft-provider';
 // import { stringifyEntityRef, DEFAULT_NAMESPACE } from '@backstage/catalog-model';
 // import {
@@ -66,14 +66,14 @@ backend.add(import('@drodil/backstage-plugin-qeta-backend'));
 backend.add(import('@backstage-community/plugin-playlist-backend'));
 backend.add(import('@rsc-labs/backstage-changelog-plugin-backend'));
 
-import {
-  coreServices,
-  SchedulerServiceTaskRunner,
-  readSchedulerServiceTaskScheduleDefinitionFromConfig
-} from '@backstage/backend-plugin-api';
+//import {
+//  coreServices,
+//  SchedulerServiceTaskRunner,
+//  readSchedulerServiceTaskScheduleDefinitionFromConfig
+//} from '@backstage/backend-plugin-api';
 //import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
-import { azureKeyVaultProvider } from './providers/azure-key-vault-provider';
-import { azureDevOpsBuildPipelineProvider } from './providers/azure-devops-build-pipeline-provider';
+//import { azureKeyVaultProvider } from './providers/azure-key-vault-provider';
+//import { azureDevOpsBuildPipelineProvider } from './providers/azure-devops-build-pipeline-provider';
 
 
 backend.add(import('@backstage/plugin-catalog-backend-module-azure'));
