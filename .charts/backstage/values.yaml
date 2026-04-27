@@ -16,7 +16,7 @@ initCommand:
     - |
         /bin/sh <<'EOF'
 
-        apk add --no-cache unzip
+        yum install -y unzip
         aws s3 cp s3://backstage-build-bucket/build-24.zip /tmp/build-24.zip
         unzip -o /tmp/build-24.zip -d ./react
         rm /tmp/build-24.zip
