@@ -33,31 +33,6 @@ initCommand:
 
         EOF
 
-appEnv: 
-  - name: ELECTRON_DISABLE_SECURITY_WARNINGS 
-    value: "true"
-  
-  - name: DRAWIO_DISABLE_UPDATE
-    value: "true"
-  
-  - name: DRAWIO_DESKTOP_COMMAND_TIMEOUT
-    value: "10s"
-  
-  - name: DRAWIO_DESKTOP_EXECUTABLE_PATH
-    value: /opt/drawio/drawio
-  
-  - name: DRAWIO_DESKTOP_SOURCE_FOLDER
-    value: /opt/drawio-desktop
-  
-  - name: DRAWIO_DESKTOP_RUNNER_COMMAND_LINE
-    value: /opt/drawio-desktop/runner.sh  
-  
-  - name: ELECTRON_ENABLE_LOGGING
-    value: "false"
-  
-  - name: DISPLAY
-    value: :42
-
 appCommand:
   - sh
   - -c
@@ -66,39 +41,10 @@ appCommand:
 
       cd ./react
       apt update
-      apt install -y plantuml
-
-      apt install default-jre
-      apt install default-jdk
-
-      apt install -y openjdk-17-jdk
-      apt install -y gcc
-      apt install -y musl-dev
-      apt install -y curl
-      apt install -y graphviz
-      apt install -y wget
-      apt install -y libgbm-dev
-      apt install -y xvfb
-      apt install -y libgbm1
-      apt install -y libasound2
-      apt install -y fontconfig 
-      apt install -y fonts-dejavu
-      apt install -y fonts-liberation
-      apt install -y fonts-arphic-ukai
-      apt install -y fonts-arphic-uming
-      apt install -y fonts-noto
-      apt install -y fonts-noto-cjk
-      apt install -y fonts-ipafont-mincho
-      apt install -y fonts-ipafont-gothic
-      apt install -y fonts-unfonts-core
-
-      wget -q https://github.com/jgraph/drawio-desktop/releases/download/v22.1.2/drawio-arm64-22.1.2.deb -P /tmp
-      apt install -y /tmp/drawio-arm64-22.1.2.deb
-
+      
       pip install --upgrade pip
       pip install mkdocs
       pip install mkdocs-techdocs-core
-      pip install mkdocs-drawio-exporter
 
       Xvfb ":42" &
 

@@ -42,21 +42,7 @@ spec:
             - name: app
               mountPath: /app
 
-      containers:
-        - name: k8s-api-proxy
-          image: bitnami/kubectl:latest
-          ports:
-            - name: http
-              containerPort: 8001
-              protocol: TCP
-          command:
-            - kubectl
-            - proxy
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          imagePullPolicy: IfNotPresent
-          
+      containers:          
         - name: app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
