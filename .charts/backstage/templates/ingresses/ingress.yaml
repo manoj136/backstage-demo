@@ -12,29 +12,12 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: {{ include "app.host" . }}
-    http:
-      paths:
-      - backend:
-          service:
-            name: backstage
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
-
-  - host: backstage1.northeurope.cloudapp.azure.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: backstage
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
-
-  tls:
-  - hosts:
-    - {{ include "app.host" . }}
-    secretName: admsolutions-tls
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backstage
+                port:
+                  number: 80
