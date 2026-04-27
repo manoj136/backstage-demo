@@ -108,7 +108,7 @@ appCommand:
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
       
-      nvm install 18.17.1
+      nvm install 20
 
       npm -g install corepack
       corepack enable
