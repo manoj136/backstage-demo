@@ -141,5 +141,5 @@ jobs:
             --set tags.app=${{ github.event.workflow_run.id }} \
             --set environment=production \
             --set s3.bucket=${{ secrets.S3_BUCKET }} \
-            --set build.id=${BUILD_ID} \
+            --set build.id=${{BUILD_ID}} \
             -f $CHART_PATH/app-config.production.yaml

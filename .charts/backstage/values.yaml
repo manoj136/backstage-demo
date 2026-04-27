@@ -17,9 +17,9 @@ initCommand:
         /bin/sh <<'EOF'
 
         yum install -y unzip
-        aws s3 cp s3://backstage-build-bucket/build-24.zip /tmp/build-24.zip
-        unzip -o /tmp/build-24.zip -d ./react
-        rm /tmp/build-24.zip
+        aws s3 cp s3://{{ .Values.s3.bucket }}/{{ .Values.build.id }}.zip /tmp/{{ .Values.build.id }}.zip
+        unzip -o /tmp/{{ .Values.build.id }}.zip -d ./react
+        rm /tmp/{{ .Values.build.id }}.zip
 
         EOF
 
