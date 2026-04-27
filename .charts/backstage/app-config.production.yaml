@@ -48,15 +48,8 @@ backend:
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
-    client: pg
-    connection:
-      database: backstage_plugin_catalog
-      host: omega-backstage-production.postgres.database.azure.com
-      port: 5432
-      user: sa@omega-backstage-production
-      password: gbDLKC*69;%YEQ3.8G#2nuRjq4af~^xSByNrm"$W-P_pd+z?k/    
-      ssl: true
-      sslmode: require 
+    client: better-sqlite3
+    connection: ':memory:'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 # integrations:
