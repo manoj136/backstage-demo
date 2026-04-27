@@ -32,7 +32,7 @@ spec:
               mountPath: /app
 
         - name: buildapp
-          image: "node:20-bullseye"
+          image: "node:20.11.1-bullseye"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           workingDir: {{ .Values.workingDir }}
           command: 
