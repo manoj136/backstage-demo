@@ -1,7 +1,7 @@
 # Backstage override configuration for your local development environment
 app:
   title: ADM Group Developer Portal
-  baseUrl: https://backstage.admsolutions.com
+  baseUrl: http://k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com
 
 organization:
   name: ADM Group
@@ -16,7 +16,7 @@ backend:
       - host: '*.swagger.io'
       - host: 'localhost:82'
       - host: '127.0.0.1:82'
-      - host: 'https://backstage.admsolutions.com' # backstage base url host
+      - host: 'http://k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com' # backstage base url host
       - host: 'localhost:5155' # azure key vault bff host
         name: bff-azure-keyVault
 
@@ -34,7 +34,7 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  baseUrl: https://backstage.admsolutions.com
+  baseUrl: http://k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
@@ -45,7 +45,7 @@ backend:
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
     origin: 
-      - https://backstage.admsolutions.com
+      - http://k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com
       - https://argocd.admsolutions.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
