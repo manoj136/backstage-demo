@@ -21,7 +21,7 @@ spec:
       serviceAccountName: backstage-k8s
       initContainers:
         - name: unzipbuild
-          image: "amazon/aws-cli:latest"
+          image: "alpine/aws-cli:latest"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           workingDir: {{ .Values.workingDir }}
           command: 
