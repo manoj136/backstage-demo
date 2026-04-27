@@ -36,6 +36,7 @@ backend:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: http://k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com
   listen:
+    host: 0.0.0.0
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
     # host: 127.0.0.1

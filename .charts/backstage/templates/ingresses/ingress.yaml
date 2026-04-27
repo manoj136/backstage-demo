@@ -5,11 +5,21 @@ metadata:
     alb.ingress.kubernetes.io/cors-enabled: "true"   
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
   name: backstage
 spec:
   ingressClassName: alb
   rules:
+    - http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: backstage
+              port:
+                number: 80
+                
   - host: k8s-backstag-backstag-67ace6136d-1888797563.us-east-1.elb.amazonaws.com
     http:
       paths:
