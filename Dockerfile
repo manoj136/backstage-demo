@@ -12,19 +12,16 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
-# Force backend build (bypasses repo detection issues)
-RUN yarn workspace backend build
-
-# Verify build output
-RUN ls -la packages/backend/dist
+# Build full monorepo (correct way)
+RUN yarn build
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
 
 WORKDIR /app
 
-# Copy only necessary files from builder
-COPY --from=builder /app /app
+# Copy only built output (NOT whole repo)
+COPY --from=builder /app/dist /app/dist
 
 # Install only production dependencies
 RUN yarn workspaces focus --all --production && yarn cache clean
@@ -33,4 +30,4 @@ RUN yarn workspaces focus --all --production && yarn cache clean
 EXPOSE 7007
 
 # Start backend
-CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+CMD ["node", "backend/index.cjs.js", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
