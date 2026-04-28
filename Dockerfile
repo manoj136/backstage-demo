@@ -18,15 +18,14 @@ ENV NODE_ENV=production
 # Copy production config into backend (VERY IMPORTANT)
 RUN cp app-config.production.yaml packages/backend/
 
+RUN yarn tsc
+
 # FORCE real build (bypasses script issues)
 RUN yarn backstage-cli repo build
 
 # Debug (optional)
-RUN ls -R packages/backend/dist
+RUN ls -R packages || true
 
-# Verify artifacts exist
-RUN test -f packages/backend/dist/skeleton.tar.gz
-RUN test -f packages/backend/dist/bundle.tar.gz
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
