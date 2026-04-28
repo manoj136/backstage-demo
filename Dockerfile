@@ -9,6 +9,8 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
+RUN  yarn tsc
+
 # Build app
 RUN yarn backstage-cli repo build
 
