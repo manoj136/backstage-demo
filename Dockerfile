@@ -13,9 +13,6 @@ COPY .yarn .yarn
 # Install dependencies
 RUN yarn install --no-immutable
 
-# Install ONLY production deps (from skeleton)
-RUN yarn workspaces focus --all --production
-
 # Copy full repo
 COPY . .
 
