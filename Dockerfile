@@ -10,7 +10,7 @@ COPY . .
 RUN yarn install --no-immutable
 
 # Build app
-RUN yarn build
+RUN yarn backstage-cli repo build
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
