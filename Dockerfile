@@ -18,8 +18,8 @@ ENV NODE_ENV=production
 # Copy production config into backend (VERY IMPORTANT)
 RUN cp app-config.production.yaml packages/backend/
 
-# Force correct build
-RUN yarn build
+# FORCE real build (bypasses script issues)
+RUN yarn backstage-cli repo build
 
 # Debug (optional)
 RUN ls -R packages/backend/dist
