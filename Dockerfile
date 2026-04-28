@@ -12,8 +12,12 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
-# Build Backstage (produces bundle.tar.gz)
-RUN yarn build
+# Force correct build
+RUN yarn build && yarn workspace backend build
+
+# Verify artifacts exist
+RUN test -f packages/backend/dist/skeleton.tar.gz
+RUN test -f packages/backend/dist/bundle.tar.gz
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
