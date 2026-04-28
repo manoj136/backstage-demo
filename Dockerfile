@@ -14,6 +14,7 @@ RUN yarn install --no-immutable
 
 # Force correct build
 RUN yarn build
+RUN yarn build:backend
 
 # Debug (optional)
 RUN ls -R packages/backend/dist
