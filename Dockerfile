@@ -13,7 +13,10 @@ COPY . .
 RUN yarn install --no-immutable
 
 # Force correct build
-RUN yarn build && yarn workspace backend build
+RUN yarn build
+
+# Debug (optional)
+RUN ls -R packages/backend/dist
 
 # Verify artifacts exist
 RUN test -f packages/backend/dist/skeleton.tar.gz
