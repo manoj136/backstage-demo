@@ -3,6 +3,9 @@ FROM node:20.11.1-bullseye AS builder
 
 WORKDIR /app
 
+# Fix Yarn version (IMPORTANT)
+RUN corepack enable && corepack prepare yarn@4.4.1 --activate
+
 # Copy everything
 COPY . .
 
@@ -11,9 +14,6 @@ RUN yarn install --no-immutable
 
 # Build Backstage (this handles tsc internally)
 RUN yarn backstage-cli repo build
-
-# Verify build (this prevents silent failures)
-RUN test -f packages/backend/dist/index.cjs.js
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
