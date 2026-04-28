@@ -1,32 +1,56 @@
-# ---------- Build ----------
-FROM node:20-bullseye AS builder
+# ---- Stage 1: Build ----
+FROM node:20.11.1-bullseye AS builder
 
 WORKDIR /app
 
-# Enable Yarn properly
-RUN corepack enable
+# Fix Yarn version (IMPORTANT)
+RUN corepack enable && corepack prepare yarn@4.4.1 --activate
 
+# Copy everything
 COPY . .
 
-RUN yarn install --immutable
+# Install dependencies
+RUN yarn install --no-immutable
 
-# Build EVERYTHING (app + backend)
-RUN yarn tsc
-RUN yarn build:backend
+# Ensure production mode
+ENV NODE_ENV=production
 
-# Verify backend output
+# Copy production config into backend (VERY IMPORTANT)
+RUN cp app-config.production.yaml packages/backend/
+
+# FORCE real build (bypasses script issues)
+RUN yarn backstage-cli repo build
+
+# Debug (optional)
 RUN ls -R packages/backend/dist
 
+# Verify artifacts exist
+RUN test -f packages/backend/dist/skeleton.tar.gz
+RUN test -f packages/backend/dist/bundle.tar.gz
 
-# ---------- Runtime ----------
-FROM node:20-slim
+# ---- Stage 2: Runtime ----
+FROM node:20.11.1-bullseye-slim
 
 WORKDIR /app
 
+# Copy required files
 COPY --from=builder /app /app
 
-RUN yarn workspaces focus --all --production
+# Create runtime directory
+RUN mkdir -p /app/runtime
+
+# Extract skeleton (dependencies structure)
+RUN tar -xzf packages/backend/dist/skeleton.tar.gz -C /app/runtime
+
+# Extract backend bundle
+RUN tar -xzf packages/backend/dist/bundle.tar.gz -C /app/runtime
+
+# Move into runtime workspace
+WORKDIR /app/runtime
+
+# Install production dependencies
+RUN yarn install --production --no-immutable
 
 EXPOSE 7007
 
-CMD ["node", "packages/backend/dist/index.cjs.js"]
+CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
