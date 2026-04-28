@@ -28043,7 +28043,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-sampler@npm:^1.2.1":
+"openapi-sampler@npm:^1.2.1, openapi-sampler@npm:^1.7.2":
   version: 1.7.2
   resolution: "openapi-sampler@npm:1.7.2"
   dependencies:
@@ -31587,6 +31587,7 @@ __metadata:
     isomorphic-dompurify: "npm:^3.10.0"
     marked: "npm:^18.0.2"
     node-gyp: "npm:^10.0.0"
+    openapi-sampler: "npm:^1.7.2"
     prettier: "npm:^2.3.2"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
