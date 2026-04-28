@@ -176,7 +176,7 @@ jobs:
       - name: Install dependencies & build Backstage
         run: |
           yarn install --no-immutable
-          yarn build
+          yarn build:all # Assuming this builds both frontend and backend
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
