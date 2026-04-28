@@ -20,7 +20,7 @@ COPY . .
 RUN cp app-config.production.yaml packages/backend/
 
 # Build backend bundle (THIS is the key step)
-RUN yarn build:backend --config packages/backend/app-config.production.yaml
+RUN yarn build:backend --config app-config.production.yaml
 
 # Debug (can remove later)
 RUN ls -R packages/backend/dist
