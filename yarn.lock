@@ -31576,6 +31576,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
+    "@asyncapi/openapi-schema-parser": "npm:^3.0.24"
     "@asyncapi/parser": "npm:^3.6.0"
     "@backstage/cli": "npm:^0.34.2-next.2"
     "@backstage/e2e-test-utils": "npm:^0.1.1"

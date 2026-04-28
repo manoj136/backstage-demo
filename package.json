@@ -59,6 +59,7 @@
   },
   "packageManager": "yarn@4.4.1",
   "dependencies": {
+    "@asyncapi/openapi-schema-parser": "^3.0.24",
     "@asyncapi/parser": "^3.6.0",
     "highlight.js": "10",
     "isomorphic-dompurify": "^3.10.0",
