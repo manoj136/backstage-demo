@@ -1,1 +1,0 @@
-export { LicensesComponent } from './LicensesComponent';

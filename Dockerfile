@@ -12,7 +12,7 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
-# Build full monorepo (correct way)
+# Build Backstage (produces bundle.tar.gz)
 RUN yarn build
 
 # ---- Stage 2: Runtime ----
@@ -20,14 +20,24 @@ FROM node:20.11.1-bullseye-slim
 
 WORKDIR /app
 
-# Copy only built output (NOT whole repo)
-COPY --from=builder /app/dist /app/dist
+# Copy required files
+COPY --from=builder /app /app
 
-# Install only production dependencies
-RUN yarn workspaces focus --all --production && yarn cache clean
+# Create runtime directory
+RUN mkdir -p /app/runtime
 
-# Expose backend port
+# Extract skeleton (dependencies structure)
+RUN tar -xzf packages/backend/dist/skeleton.tar.gz -C /app/runtime
+
+# Extract backend bundle
+RUN tar -xzf packages/backend/dist/bundle.tar.gz -C /app/runtime
+
+# Move into runtime workspace
+WORKDIR /app/runtime
+
+# Install production dependencies
+RUN yarn install --production --no-immutable
+
 EXPOSE 7007
 
-# Start backend
-CMD ["node", "backend/index.cjs.js", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
