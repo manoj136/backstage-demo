@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --no-immutable
 
 # Build app
 RUN yarn build
