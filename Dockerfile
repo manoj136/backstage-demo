@@ -12,9 +12,14 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
+# Ensure production mode
+ENV NODE_ENV=production
+
+# Copy production config into backend (VERY IMPORTANT)
+RUN cp app-config.production.yaml packages/backend/
+
 # Force correct build
 RUN yarn build
-RUN yarn build:backend
 
 # Debug (optional)
 RUN ls -R packages/backend/dist
