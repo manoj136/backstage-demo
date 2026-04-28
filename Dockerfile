@@ -11,7 +11,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn .yarn
 
 # Install dependencies
-RUN yarn install --immutable
+RUN yarn install --no-immutable
 
 # Copy full repo
 COPY . .
