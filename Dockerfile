@@ -12,8 +12,11 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
-# Build Backstage (this handles tsc internally)
-RUN yarn backstage-cli repo build
+# Force backend build (bypasses repo detection issues)
+RUN yarn workspace backend build
+
+# Verify build output
+RUN ls -la packages/backend/dist
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
