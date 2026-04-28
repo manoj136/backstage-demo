@@ -175,7 +175,7 @@ jobs:
 
       - name: Install dependencies & build Backstage
         run: |
-          yarn install --frozen-lockfile
+          yarn install --immutable-cache
           yarn build
 
       - name: Configure AWS credentials
