@@ -27,4 +27,4 @@ RUN yarn workspaces focus --all --production
 EXPOSE 7007
 
 # Start backend
-CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
