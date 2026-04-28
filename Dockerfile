@@ -22,6 +22,9 @@ RUN cp app-config.production.yaml packages/backend/
 # Build backend bundle (THIS is the key step)
 RUN yarn build:backend --config app-config.production.yaml
 
+# Install ONLY production deps (from skeleton)
+RUN yarn workspaces focus --all --production
+
 # Debug (can remove later)
 RUN ls -R packages/backend/dist
 
@@ -51,9 +54,6 @@ RUN mkdir -p /app/runtime \
 WORKDIR /app/runtime
 RUN corepack enable && corepack prepare yarn@4.4.1 --activate \
     && yarn install --production
-
-# Install ONLY production deps (from skeleton)
-RUN yarn workspaces focus --all --production
 
 # Extract backend bundle
 RUN tar -xzf /app/dist/bundle.tar.gz -C /app/runtime

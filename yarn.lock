@@ -1874,6 +1874,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage-community/plugin-azure-devops-common@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "@backstage-community/plugin-azure-devops-common@npm:0.22.0"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.8.0"
+    "@backstage/plugin-catalog-common": "npm:^1.1.9"
+    "@backstage/plugin-permission-common": "npm:^0.9.8"
+  checksum: 10c0/75b19761a97017d276a87f83920ab26fe23ffc5878e33f5c66bfcbc6b349f2938788799ea52a355555de9ab100d18d48202f9bfed35424736e2ff0c6c2af3671
+  languageName: node
+  linkType: hard
+
 "@backstage-community/plugin-azure-devops-common@npm:^0.4.8, @backstage-community/plugin-azure-devops-common@npm:^0.4.9":
   version: 0.4.9
   resolution: "@backstage-community/plugin-azure-devops-common@npm:0.4.9"
@@ -31580,7 +31591,9 @@ __metadata:
     "@asyncapi/openapi-schema-parser": "npm:^3.0.24"
     "@asyncapi/parser": "npm:^3.6.0"
     "@asyncapi/protobuf-schema-parser": "npm:^3.6.0"
+    "@backstage-community/plugin-azure-devops-common": "npm:^0.22.0"
     "@backstage/cli": "npm:^0.34.2-next.2"
+    "@backstage/core-components": "npm:^0.18.9"
     "@backstage/e2e-test-utils": "npm:^0.1.1"
     "@playwright/test": "npm:^1.32.3"
     "@spotify/prettier-config": "npm:^12.0.0"
