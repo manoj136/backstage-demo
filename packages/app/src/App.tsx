@@ -41,10 +41,6 @@ import { QetaPage } from '@drodil/backstage-plugin-qeta';
 import { PlaylistIndexPage, PlaylistPage } from '@backstage-community/plugin-playlist';
 import * as plugins from './plugins';
 
-import { ApiBuilderComparerPage } from '@internal/backstage-plugin-apibuildcomparer';
-import { LicensesPage } from '@internal/backstage-plugin-licenses';
-import { CertificatesPage } from '@internal/backstage-plugin-certificates';
-
 import { LightBox } from '@backstage/plugin-techdocs-module-addons-contrib';
 
 const app = createApp({
@@ -118,10 +114,6 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
-
-    <Route path="/apibuildcomparer" element={<ApiBuilderComparerPage />} />
-    <Route path="/licenses" element={<LicensesPage />} />
-    <Route path="/certificates" element={<CertificatesPage />} />
   </FlatRoutes>
 );
 
