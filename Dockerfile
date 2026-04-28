@@ -9,10 +9,11 @@ COPY . .
 # Install dependencies
 RUN yarn install --no-immutable
 
-RUN  yarn tsc
-
-# Build app
+# Build Backstage (this handles tsc internally)
 RUN yarn backstage-cli repo build
+
+# Verify build (this prevents silent failures)
+RUN test -f packages/backend/dist/index.cjs.js
 
 # ---- Stage 2: Runtime ----
 FROM node:20.11.1-bullseye-slim
@@ -23,7 +24,7 @@ WORKDIR /app
 COPY --from=builder /app /app
 
 # Install only production dependencies
-RUN yarn workspaces focus --all --production
+RUN yarn workspaces focus --all --production && yarn cache clean
 
 # Expose backend port
 EXPOSE 7007
